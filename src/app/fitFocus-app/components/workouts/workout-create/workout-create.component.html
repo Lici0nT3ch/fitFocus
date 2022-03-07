@@ -1,0 +1,12 @@
+<mat-card>
+  <form (submit)="onAddWorkout(workoutForm)" #workoutForm="ngForm">
+    <mat-form-field>
+      <input matInput type="text" name="name" ngModel required minlength="3" placeholder="Workout Name" #name="ngModel">
+      <mat-error *ngIf="name.invalid">Please enter a workout name!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput rows="4" name="details" ngModel required placeholder="Workout Details" #details="ngModel">Please enter workout details!</textarea>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Save Workout</button>
+  </form>
+</mat-card>
