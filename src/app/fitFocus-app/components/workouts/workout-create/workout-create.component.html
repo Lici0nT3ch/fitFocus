@@ -1,11 +1,20 @@
 <mat-card>
-  <form (submit)="onAddWorkout(workoutForm)" #workoutForm="ngForm">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="form" (submit)="onSaveWorkout()" *ngIf="!isLoading">
     <mat-form-field>
-      <input matInput type="text" name="name" ngModel required minlength="3" placeholder="Workout Name" #name="ngModel">
-      <mat-error *ngIf="name.invalid">Please enter a workout name!</mat-error>
+      <input matInput type="text" formControlName="name" placeholder="Workout Name">
+      <mat-error *ngIf="form.get('name').invalid">Please enter a workout name!</mat-error>
     </mat-form-field>
+    <div>
+      <button mat-stroked-button type="button" (click)="filePicker.click()">Pick Image</button>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+      <img [src]="imagePreview" [alt]="form.value.name">
+    </div>
     <mat-form-field>
-      <textarea matInput rows="4" name="details" ngModel required placeholder="Workout Details" #details="ngModel">Please enter workout details!</textarea>
+      <textarea matInput rows="4" formControlName="details" placeholder="Workout Details"></textarea>
+      <mat-error *ngIf="form.get('details').invalid">Please enter workout details!</mat-error>
     </mat-form-field>
     <button mat-raised-button color="accent" type="submit">Save Workout</button>
   </form>

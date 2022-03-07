@@ -6,7 +6,8 @@ import { WorkoutCreateComponent } from './fitFocus-app/components/workouts/worko
 
 const routes: Routes = [
   { path: '', component: WorkoutListComponent },
-  { path: 'create', component: WorkoutCreateComponent }
+  { path: 'create', component: WorkoutCreateComponent },
+  { path: 'edit/:workoutId', component: WorkoutCreateComponent }
 ];
 
 @NgModule({

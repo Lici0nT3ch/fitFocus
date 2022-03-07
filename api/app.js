@@ -1,14 +1,15 @@
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const Workout = require("./models/workout");
+const workoutRoutes = require("./routes/workouts");
 
 const app = express();
 
 mongoose
   .connect(
-    "mongodb://127.0.0.1/FitFocus"
+    "mongodb://localhost/FitFocus"
   )
   .then(() => {
     console.log("Connected to database!");
@@ -19,6 +20,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images", express.static(path.join("api/images")));
 
 /*Middleware*/
 app.use((req, res, next) => {
@@ -34,33 +36,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/workouts", (req, res, next) => {
-  const workout = new Workout({
-    name: req.body.name,
-    details: req.body.details
-  });
-  workout.save().then(createdWorkout => {
-    res.status(201).json({
-      message: "Workout added successfully",
-      workoutId: createdWorkout._id
-    });
-  });
-});
-
-app.get("/api/workouts", (req, res, next) => {
-  workout.find().then(documents => {
-    res.status(200).json({
-      message: "Workouts fetched successfully!",
-      workouts: documents
-    });
-  });
-});
-
-app.delete("/api/workouts/:id", (req, res, next) => {
-  workout.deleteOne({ _id: req.params.id }).then(result => {
-    console.log(result);
-    res.status(200).json({ message: "Workout deleted!" });
-  });
-});
+app.use("/api/workouts", workoutRoutes);
 
 module.exports = app;
